@@ -5,7 +5,7 @@ FileManager::FileManager(Interlog *logger)
 {
     setLog(logger); // Устанавливаем логгер
 
-    connect(this, &FileManager::upd_signal, this, &FileManager::update); // Подключаем сигнал к слоту
+    connect(this, &FileManager::upd_signal, this, &FileManager::update);
 }
 
 void FileManager::addFile(const QString &str)
