@@ -19,5 +19,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Log.h \
+    LogFormatter.h \
     file.h \
     filemanager.h

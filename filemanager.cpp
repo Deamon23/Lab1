@@ -10,10 +10,19 @@ FileManager::FileManager(Interlog *logger)
 
 void FileManager::addFile(const QString &str)
 {
+    for (const auto& file : files) {
+        if (file->getUrl() == str) { // Проверяем, не добавлен ли файл уже
+            if (l) {
+                l->log("File is already being watched: " + str);
+            }
+            return;
+        }
+    }
+
     File* F = new File(str); // Создаем новый объект File
     files.push_back(F); // Добавляем объект в вектор
     if (l) { // Если логгер установлен
-        l->logFileAdded(str, F->getSize()); // Логируем добавление файла
+        l->log(LogFormatter::formatFileAdded(str, F->getSize())); // Логируем добавление файла
     }
 }
 
@@ -24,7 +33,7 @@ void FileManager::removeFile(const QString &str)
             delete files[i]; // Удаляем объект
             files.remove(i); // Удаляем элемент из вектора
             if (l) { // Если логгер установлен
-                l->logFileRemoved(str); // Логируем удаление файла
+                l->log(LogFormatter::formatFileRemoved(str)); // Логируем удаление файла
             }
             break;
         }
@@ -45,7 +54,6 @@ void FileManager::setLog(Interlog *logger)
 {
     if (logger) {
         l = logger; // Устанавливаем логгер
-        connect(this, &FileManager::log_signal, l, &Interlog::log); // Подключаем сигнал к методу логгера
     } else {
         std::cout << "Logger is invalid, messaging will be stopped." << std::endl; // Выводим сообщение об ошибке
     }
@@ -81,17 +89,17 @@ void FileManager::update(File* F)
     if (!F->getExist()) { // Если файл не существовал
         F->fileUpdate(); // Обновляем информацию о файле
         if (l) { // Если логгер установлен
-            l->logFileCreated(F->getUrl(), F->getSize()); // Логируем создание файла
+            l->log(LogFormatter::formatFileCreated(F->getUrl(), F->getSize())); // Логируем создание файла
         }
     } else if (x.exists()) { // Если файл существует
         F->fileUpdate(); // Обновляем информацию о файле
         if (l) { // Если логгер установлен
-            l->logFileChanged(F->getUrl(), F->getSize()); // Логируем изменение файла
+            l->log(LogFormatter::formatFileChanged(F->getUrl(), F->getSize())); // Логируем изменение файла
         }
     } else { // Если файл был удален
         F->fileUpdate(); // Обновляем информацию о файле
         if (l) { // Если логгер установлен
-            l->logFileDeleted(F->getUrl()); // Логируем удаление файла
+            l->log(LogFormatter::formatFileDeleted(F->getUrl())); // Логируем удаление файла
         }
     }
 }

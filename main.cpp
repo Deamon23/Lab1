@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         QString input = cin.readLine();
         QStringList args = input.split(" ", Qt::SkipEmptyParts); // Разделение строки на части
 
-        if (args.isEmpty()) // Проверка, что строка не пустая
+        if (args.isEmpty())
         {
             continue;
         }
@@ -56,11 +56,11 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Задержка на 100 миллисекунд
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         FM.check(); // Проверяем состояние файлов
     }
 
-    return a.exec();
+    return a.exec(); // Запускаем цикл обработки событий
 }
 
 // C:/gits/test/test1.txt

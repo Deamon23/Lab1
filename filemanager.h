@@ -3,6 +3,7 @@
 
 #include "file.h"
 #include "Log.h"
+#include "LogFormatter.h"
 #include <QVector>
 #include <QObject>
 
@@ -29,7 +30,6 @@ public:
 
 signals:
     void upd_signal(File* F); // Сигнал об обновлении файла
-    void log_signal(const QString &str); // Сигнал для логгера
 
 private slots:
     void update(File* F); // Слот для обновления файла
